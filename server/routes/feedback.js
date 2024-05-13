@@ -1,0 +1,52 @@
+const express = require("express");
+const router = express.Router();
+const db = require("../models");
+const user = db.users;
+const lawyer = db.lawyers;
+const feedback = db.feedbacks;
+const jwt = require("jsonwebtoken");
+
+
+router.post("/", async (req, res) => {
+    try {
+        const { lawyerEmail, comment, overallRating } = req.body;
+        const token = req.cookies.jwt;
+        const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
+        const userId = verifyToken.user_id;
+
+        const existingUser = await user.findOne({
+            where: { user_id: userId },
+        });
+
+        if (existingUser) {
+            const existingLawyer = await lawyer.findOne({
+                where: { lawyer_email: lawyerEmail },
+            });
+
+            if (existingLawyer) {
+                const createFeedback = new feedback({
+                    UserUserId: userId,
+                    LawyerLawyerId: existingLawyer.lawyer_id,
+                    comment: comment,
+                    rating: overallRating
+
+                });
+                const created = await createFeedback.save();
+
+                res.status(200).send("Feedback added");
+
+            } 
+
+        }
+        else{
+            res.status(401).send("Feedback not saved");
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(400).send(error);
+
+    }
+});
+
+module.exports = router;
