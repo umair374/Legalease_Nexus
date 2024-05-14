@@ -38,7 +38,22 @@ router.post("/", async (req, res) => {
                 });
                 const created = await createFeedback.save();
 
-                res.status(200).send("Feedback added");
+                const feedbacks = await feedback.findAll({
+                    where: { LawyerLawyerId: existingLawyer.lawyer_id },
+                    attributes: ['rating'],
+                });
+
+                const totalRating = feedbacks.reduce((acc, feedback) => acc + feedback.rating, 0);
+                const averageRating = totalRating / feedbacks.length;
+                const roundedRating = Math.round(averageRating);
+
+                
+                await lawyer.update(
+                    { lawyer_rating: roundedRating },
+                    { where: { lawyer_id: existingLawyer.lawyer_id } }
+                );
+
+                res.status(200).send("Feedback added and lawyer rating updated");
 
             } 
             else{
