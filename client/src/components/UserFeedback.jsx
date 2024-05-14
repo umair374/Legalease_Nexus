@@ -29,6 +29,9 @@ const UserFeedback = () => {
             });
 
             if (res.status === 200) {
+                window.alert("submited");
+                setLawyerEmail('');
+                setComment('');
 
             } else if (res.status === 401) {
                 window.alert("Lawyer Does not exists");
@@ -38,7 +41,7 @@ const UserFeedback = () => {
             }
             
             else {
-                window.alert("Error");
+                window.alert("...");
             }
         } catch (error) {
             console.error(error);

@@ -7,6 +7,7 @@ const AppointmentForm = () => {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedDay, setSelectedDay] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +44,8 @@ const AppointmentForm = () => {
 
     fetchFreeSlots();
   }, [lawyer_email]);
+
+  const filteredSlots = slots.filter(slot => slot.day === selectedDay);
 
   const handleSubmit = async (day, slot) => {
     try {
@@ -82,8 +85,25 @@ const AppointmentForm = () => {
   return (
     <div className="container mx-auto my-5 px-6 py-10 shadow-lg rounded-lg">
       <h2 className="text-4xl font-bold mb-6">Available Days and Slots</h2>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {slots.map((slot) => (
+      <div>
+        <label htmlFor="day" className="block text-lg font-medium text-gray-700">
+          Select Day:
+        </label>
+        <select
+          id="day"
+          name="day"
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+          value={selectedDay}
+          onChange={(e) => setSelectedDay(e.target.value)}
+        >
+          <option value="">Select a Day</option>
+          {Array.from(new Set(slots.map(slot => slot.day))).map(day => (
+            <option key={day} value={day}>{day}</option>
+          ))}
+        </select>
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-6">
+        {filteredSlots.map((slot) => (
           <div key={slot.id} className="p-4 border rounded-lg shadow-sm bg-white">
             <p className="text-gray-600">
               <strong className="font-bold">Day:</strong> {slot.day} - {' '}
@@ -101,6 +121,5 @@ const AppointmentForm = () => {
     </div>
   );
 };
-
 
 export default AppointmentForm;

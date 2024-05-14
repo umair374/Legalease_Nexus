@@ -54,7 +54,7 @@ router.post("/", async (req, res) => {
             sendEmail(
               lawyer_email,
               'Appointment Request',
-              `Dear Lawyer,\n\n${vUser.user_name} (${vUser.user_email}) has booked an appointment with you for day: ${day} date: ${closestDate} time: ${slot}. Please login to the website to confirm the meeting.\n\nThank you.`
+              `Dear Lawyer,\n\n${vUser.user_name} (${vUser.user_email}) has booked an appointment with you for day: ${day} date: ${closestDate} time: ${slot}. Please login(http://localhost:3000/login) to the website to confirm the meeting.\n\nThank you.`
             );
           
             res.status(200).send("Request sent to lawyer's email.");
