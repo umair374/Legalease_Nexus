@@ -163,7 +163,7 @@ const ManageFreeSlots = () => {
             <span className="text-lg">{slot.day} - {slot.slot}</span>
             <button
               onClick={() => deleteSlot(slot.id)}
-              className="text-red-500 font-bold hover:text-red-700"
+              className="bg-red-500 hover:bg-red-600 text-white font-bold px-1 py-1 rounded"
             >
               Delete
             </button>

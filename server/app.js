@@ -18,6 +18,7 @@ const meetingRecordRoutes = require('./routes/meeting.routes');
 const freeslotRoutes = require('./routes/freeSlot.routes');
 const fetchU =require('./routes/idFetchU');
 const fetchL =require('./routes/idFetchL');
+const router = require('./routes/route');
 //const sendEmail =require("./utils/sendEmail");
 
 
@@ -43,6 +44,7 @@ db.sequelize
     console.log("Failed to sync db: " + err.message);
   });
 
+app.use("/i",router);  
 app.use("/register", require('./routes/register'));
 app.use("/login", require('./routes/login'));
 app.use("/logout", require('./routes/logout'));

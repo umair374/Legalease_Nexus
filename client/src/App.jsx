@@ -1,5 +1,11 @@
 import React from "react";
 import './App.css';
+import DisplayDoc from "./components/DocumentView.js";
+import Drop from "./components/dropdown.js";
+import PropertyAgreement from "./components/PropertyAgreement.js";
+import RentalAgreement from "./components/RentalAgreement.js";
+import SaleofCarAgreement from "./components/SaleofCarAgreement.js";
+import DisplayResultDoc from "./components/ResultDocument.js";
 import {
   Home,
   BlogPage,
@@ -16,7 +22,7 @@ import {
 import { Success, Cancel, Legaldocs, BookSearch, CheckoutM, CheckoutY, Mentorship, Guides } from "./components";
 import useFetch from "./hooks/useFetch";
 import { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "@stripe/stripe-js";
 import { Navbar } from "./components";
 import Dashboard from './components/Dashboard';
@@ -163,6 +169,7 @@ export default function App() {
 
       <div>
         <Routes>
+          
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutContentPage />} />
           <Route path="/blog" element={<BlogPage blogs={data} />} />
@@ -170,21 +177,28 @@ export default function App() {
           <Route path="/article" element={<ArticlePage />} />
           <Route path="/faqs" element={<FaqContent />} />
           <Route path="/faqvideoseries" element={<FaqVideoContent />} />
-          
-          
+
+
+          <Route path="/property-agreement" element={<PropertyAgreement />} />
+          <Route path="/rental-agreement" element={<RentalAgreement />} />
+          <Route path="/saleofcar-agreement" element={<SaleofCarAgreement />} />
+          <Route path="/ShowLegalDocuments/:uri/:to" element={<DisplayDoc />} />
+          <Route path="/ShowResultDocuments/:uri" element={<DisplayResultDoc />} />
+
+
           <Route path="/checkout" index element={<CheckoutContent />} />
           <Route path="/checkoutM" index element={<CheckoutM />} />
           <Route path="/checkoutY" index element={<CheckoutY />} />
           <Route path="success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
-          
-          
+
+
           <Route path="/user/books" element={<Private component={BookSearch} auth={auth} userType={userType} />} />
           <Route path="/user/legalmentorship" element={<Private component={Mentorship} auth={auth} userType={userType} />} />
           <Route path="/user/guides" element={<Private component={Guides} auth={auth} userType={userType} />} />
           <Route path="/user/membership" element={<Private component={MembershipContent} auth={auth} userType={userType} />} />
-          <Route path="/user/legaldocuments" element={<Private component={Legaldocs} auth={auth} userType={userType} />}/>
-          <Route path="/user/subscriptionbox/pricing" element={<Private component={PricingContent} auth={auth} userType={userType} />}/>
+          <Route path="/user/legaldocuments" element={<Private component={Drop} auth={auth} userType={userType} />} />
+          <Route path="/user/subscriptionbox/pricing" element={<Private component={PricingContent} auth={auth} userType={userType} />} />
           <Route path="/user/lawyer-feedback" element={<Private component={UserFeedback} auth={auth} userType={userType} />} />
           <Route path="/user/dashboard" element={<Private component={Dashboard} auth={auth} userType={userType} />} />
           <Route path="/user/view-lawyer" element={<Private component={ViewLawyer} auth={auth} userType={userType} />} />
