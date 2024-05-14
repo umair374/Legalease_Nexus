@@ -102,7 +102,8 @@ const VerifyOtp = () => {
             <form onSubmit={handleSubmit2}>
               <button
                 type="submit"
-                className="text-blue-500 mt-2 block"
+                className="bg-white text-blue-500 mt-2 block rounded-lg shadow-lg border-spacing-0 hover:bg-gray-400 transition-colors"
+                
               >
                 Resend OTP
               </button>

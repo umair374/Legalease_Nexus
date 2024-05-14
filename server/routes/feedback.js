@@ -5,7 +5,7 @@ const user = db.users;
 const lawyer = db.lawyers;
 const feedback = db.feedbacks;
 const jwt = require("jsonwebtoken");
-
+const allowedDomains = ["gmail.com", "cfd.nu.edu.pk", "yahoo.com"];
 
 router.post("/", async (req, res) => {
     try {
@@ -13,6 +13,11 @@ router.post("/", async (req, res) => {
         const token = req.cookies.jwt;
         const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
         const userId = verifyToken.user_id;
+        
+        const domain = lawyerEmail.split('@')[1];
+        if (!allowedDomains.includes(domain)) {
+          return res.status(402).json({ message: "Email domain not allowed" });
+        }
 
         const existingUser = await user.findOne({
             where: { user_id: userId },
@@ -36,11 +41,12 @@ router.post("/", async (req, res) => {
                 res.status(200).send("Feedback added");
 
             } 
+            else{
+                res.status(401).send("Feedback not saved");
+            }
 
         }
-        else{
-            res.status(401).send("Feedback not saved");
-        }
+       
 
     } catch (error) {
         console.error(error);

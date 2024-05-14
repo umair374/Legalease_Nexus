@@ -24,15 +24,19 @@ const UserFeedback = () => {
                     lawyerEmail,
                     comment,
                     overallRating,
-                    
+
                 }),
             });
 
             if (res.status === 200) {
 
-            } else if(res.status === 401) {
-                window.alert("Error saving feedback");
+            } else if (res.status === 401) {
+                window.alert("Lawyer Does not exists");
             }
+            else if (res.status === 402) {
+                window.alert("Email domain not allowed");
+            }
+            
             else {
                 window.alert("Error");
             }
@@ -47,6 +51,10 @@ const UserFeedback = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (comment.trim() === '' || !/^[a-zA-Z0-9\s\/\.,!?:]+$/g.test(comment)) {
+            window.alert("Invalid comment!");
+            return;
+        }
 
         try {
             const res = await fetch("http://127.0.0.1:5000/analyze_sentiment", {
@@ -63,7 +71,7 @@ const UserFeedback = () => {
 
             if (res.status === 200) {
                 const result = await res.json();
-                const { overall_rating,overall_sentiment, overall_star_rating } = result;
+                const { overall_rating, overall_sentiment, overall_star_rating } = result;
                 setSentiment(overall_sentiment);
                 // setAveragePolarity(average_polarity);
                 setOverallStarRating(overall_star_rating);
@@ -71,7 +79,7 @@ const UserFeedback = () => {
                 handleSubmit2(event);
 
             } else if (res.status === 401) {
-                window.alert("Invalid Input");
+                window.alert("Invalid comment");
             }
             else {
                 window.alert("Error doing Sentiment");
@@ -89,11 +97,13 @@ const UserFeedback = () => {
                 <label className="block">
                     <span className="text-white font-semibold">Lawyer Email:</span>
                     <input
-                        type="text"
+                        pattern="[\w\.-]+@(gmail\.com|cfd\.nu\.edu\.pk|yahoo\.com)"
+                        type="email"
                         value={lawyerEmail}
                         onChange={(e) => setLawyerEmail(e.target.value)}
                         name="lawyerEmail"
                         placeholder="Enter lawyer's email"
+
                         required
                         className="mt-1 block w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                     />
@@ -105,6 +115,7 @@ const UserFeedback = () => {
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="Enter your feedback here"
                         required
+
                         className="mt-1 block w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                     />
                 </label>
