@@ -78,7 +78,7 @@ const Navbar = ({ userType, auth1 }) => {
             onMouseLeave={handleMouseLeave}
           >
             <Link
-              to="/blog"
+              to="/article"
               className="text-sm font-semibold leading-6 text-gray-600"
             >
               Knowledge Base

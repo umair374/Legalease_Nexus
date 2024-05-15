@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import Swal from 'sweetalert2';
 const ManageFreeSlots = () => {
   const [freeSlots, setFreeSlots] = useState([]);
   const [newSlot, setNewSlot] = useState({ day: '', startHour: '', startMinute: '', endHour: '', endMinute: '' });
@@ -27,18 +27,36 @@ const ManageFreeSlots = () => {
     const { startHour, startMinute, endHour, endMinute } = newSlot;
     if (!newSlot.day) {
       console.error('Day must not be empty');
-      window.alert('Day must not be empty');
+      Swal.fire({
+        title: 'Error!',
+        text: 'Day must not be empty',
+        icon: 'error',
+        confirmButtonText: 'Oh!'
+      })
+      // window.alert('Day must not be empty');
       return;
     }
   
     if (!startHour || !startMinute || !endHour || !endMinute) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Time slots must not be empty',
+        icon: 'error',
+        confirmButtonText: 'Oh!'
+      })
       console.error('Time slots must not be empty');
-      window.alert('Time slots must not be empty');
+      // window.alert('Time slots must not be empty');
       return;
     }
     if (parseInt(endHour) < parseInt(startHour) || (parseInt(endHour) === parseInt(startHour) && parseInt(endMinute) <= parseInt(startMinute))) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Invalid slot: Ending time must be greater than starting time',
+        icon: 'error',
+        confirmButtonText: 'Oh!'
+      })
       console.error('Invalid slot: Ending time must be greater than starting time');
-      window.alert('Invalid slot: Ending time must be greater than starting time');
+      // window.alert('Invalid slot: Ending time must be greater than starting time');
       return;
     }
 

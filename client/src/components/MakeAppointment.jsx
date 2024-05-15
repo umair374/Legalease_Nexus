@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
 
 const MakeAppointment = (props) => {
   const navigate = useNavigate();
@@ -29,10 +30,22 @@ const MakeAppointment = (props) => {
       });
 
       if (res.status === 200) {
-        window.alert("Request Sent");
+        // window.alert("Request Sent");
+        Swal.fire({
+          title: 'Error!',
+          text: 'Request Sent',
+          icon: 'success',
+          confirmButtonText: 'Cool'
+        })
         navigate(`/`);
       } else {
-        window.alert("Invalid Mail");
+        Swal.fire({
+          title: 'Error!',
+          text: 'Invalid Mail',
+          icon: 'error',
+          confirmButtonText: 'Oh!'
+        })
+        // window.alert("Invalid Mail");
       }
     } catch (error) {
       console.error(error);

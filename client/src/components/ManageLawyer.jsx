@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 // const bcryptjs = require('bcryptjs');
 
 const ManageLawyer = () => {
@@ -77,7 +78,13 @@ const ManageLawyer = () => {
 
       if (response.status === 200) {
         setLawyers((prevLawyers) => prevLawyers.filter((lawyer) => lawyer.lawyer_id !== lawyerId));
-        window.alert("Lawyer Deleted")
+        Swal.fire({
+          title: 'Error!',
+          text: 'Lawyer Deleted',
+          icon: 'error',
+          confirmButtonText: 'ok'
+        })
+        // window.alert("Lawyer Deleted")
       } else {
         console.error('Failed to delete lawyer');
       }
