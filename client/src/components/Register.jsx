@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Register = (props) => {
   const navigate = useNavigate();
@@ -73,13 +74,32 @@ const Register = (props) => {
       });
       if(res.status === 401)
       {
-        window.alert(" Email domain not allowed");
+        Swal.fire({
+          title: 'Error!',
+          text: 'Email domain not allowed',
+          icon: 'error',
+          confirmButtonText: 'Oh!'
+        })
+        // window.alert(" Email domain not allowed");
       }
       else if (res.status === 400 || !res) {
-        window.alert("Already Used Details");
+       
+        Swal.fire({
+          title: 'Error!',
+          text: 'Already Used Details',
+          icon: 'error',
+          confirmButtonText: 'Oh!'
+        })
+        // window.alert("Already Used Details");
         setValidationErrors({});
       } else {
-        window.alert("Registered Successfully,Verify OTP");
+        Swal.fire({
+          title: 'Success',
+          text: 'Registered Successfully,Verify OTP',
+          icon: 'success',
+          confirmButtonText: 'Cool'
+        })
+        // window.alert("Registered Successfully,Verify OTP");
         navigate(`/verify-otp/${email}`);
       }
     } catch (error) {

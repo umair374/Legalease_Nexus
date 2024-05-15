@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const UserFeedback = () => {
     // const navigate = useNavigate();
@@ -29,15 +30,35 @@ const UserFeedback = () => {
             });
 
             if (res.status === 200) {
-                window.alert("submited");
+                Swal.fire({
+                    title: 'Success',
+                    text: 'submited',
+                    icon: 'success',
+                    confirmButtonText: 'Cool'
+                  })
+                // window.alert("submited");
                 setLawyerEmail('');
                 setComment('');
 
             } else if (res.status === 401) {
-                window.alert("Lawyer Does not exists");
+                
+                  Swal.fire({
+                    title: 'Error!',
+                    text: 'Lawyer Does not exists',
+                    icon: 'error',
+                    confirmButtonText: 'ok'
+                  })
+                // window.alert("Lawyer Does not exists");
             }
             else if (res.status === 402) {
-                window.alert("Email domain not allowed");
+                
+                  Swal.fire({
+                    title: 'Error!',
+                    text: 'Email domain not allowed',
+                    icon: 'error',
+                    confirmButtonText: 'ok'
+                  })
+                // window.alert("Email domain not allowed");
             }
             
             else {
@@ -82,10 +103,24 @@ const UserFeedback = () => {
                 handleSubmit2(event);
 
             } else if (res.status === 401) {
-                window.alert("Invalid comment");
+               
+                  Swal.fire({
+                    title: 'Error!',
+                    text: 'Invalid comment',
+                    icon: 'error',
+                    confirmButtonText: 'ok'
+                  })
+                // window.alert("Invalid comment");
             }
             else {
-                window.alert("Error doing Sentiment");
+               
+                  Swal.fire({
+                    title: 'Error!',
+                    text: 'Error doing Sentiment',
+                    icon: 'error',
+                    confirmButtonText: 'ok'
+                  })
+                // window.alert("Error doing Sentiment");
             }
         } catch (error) {
             console.error(error);

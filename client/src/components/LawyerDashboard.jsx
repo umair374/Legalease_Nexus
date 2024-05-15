@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {  useParams } from 'react-router-dom';
 import NotificationBar from './NotificationBar'; 
 import JoinRoom from './JoinRoom';
+import Swal from 'sweetalert2';
 
 const LawyerDashboard = () => {
 
@@ -40,7 +41,13 @@ const LawyerDashboard = () => {
     if(res.status === 200)
     {
     const code = await res.json();
-    window.alert(`Join Meeting Using Code : ${code}`);
+    Swal.fire({
+      title: 'Success',
+      text: `Join Meeting Using Code : ${code}`,
+      icon: 'info',
+      confirmButtonText: 'Ok'
+    })
+    // window.alert(`Join Meeting Using Code : ${code}`);
     setBookingDetails(null); 
     }
   };

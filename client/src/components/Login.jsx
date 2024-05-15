@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 const Login = () => {
  // const history = useNavigate();
@@ -8,6 +9,7 @@ const Login = () => {
     email: '',
     password: ''
   });
+  //const [notification, setNotification] = useState(null);
 
   const handleChange = (event) => {
     let name = event.target.name;
@@ -30,7 +32,13 @@ const Login = () => {
         })
       })
       if (res.status === 400 || !res) {
-        window.alert("Invalid Credentials or User Not Verified")
+        Swal.fire({
+          title: 'Error!',
+          text: 'Invalid Credentials or User Not Verified',
+          icon: 'error',
+          confirmButtonText: 'Oh!'
+        })
+        // window.alert("Invalid Credentials or User Not Verified")
       } else {
         const result = await res.json();
 

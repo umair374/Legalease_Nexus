@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const AppointmentForm = () => {
   const { lawyer_email, lawyer_name } = useParams();
@@ -64,10 +65,22 @@ const AppointmentForm = () => {
       });
 
       if (res.status === 200) {
-        window.alert("Request Sent");
+        Swal.fire({
+          title: 'Success',
+          text: 'Request sent',
+          icon: 'success',
+          confirmButtonText: 'ok'
+        })
+        // window.alert("Request Sent");
         navigate(`/user/view-lawyer`);
       } else {
-        window.alert("Invalid Mail");
+        Swal.fire({
+          title: 'Error!',
+          text: 'Invalid MAil',
+          icon: 'error',
+          confirmButtonText: 'ok'
+        })
+        // window.alert("Invalid Mail");
       }
     } catch (error) {
       console.error(error);

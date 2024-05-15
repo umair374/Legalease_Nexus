@@ -9,10 +9,11 @@ const lawyer = db.lawyers;
 
 router.post("/", async (req, res) => {
   try {
+    let isMatch = '';
     const user_email = req.body.email;
     const user_password = req.body.password;
     console.log("Request Received");
-    // res.json()
+
     const vUser = await user.findOne({
       where: { user_email: user_email, isVerified: true }
     });
@@ -26,64 +27,44 @@ router.post("/", async (req, res) => {
     });
 
     if (vUser) {
-      const isMatch = await bcryptjs.compare(user_password, vUser.user_password);
-
+      isMatch = await bcryptjs.compare(user_password, vUser.user_password);
       if (isMatch) {
         const token = await vUser.generateToken();
-        res.cookie("jwt", token, {
-          //expires: new Date(Date.now() + 306400), //5 min
+        return res.cookie("jwt", token, {
           expires: new Date(Date.now() + 86400000),
-          //  expires : new Date(Date.now() + 46400), //0.773 second
           httpOnly: true
-        })
-        res.status(200).json({ userType: "user", message: "User LoggedIn" });
-      } else {
-        if (!vAdmin && !vLawyer) {
-          res.status(400).send("Invalid Credentials");
-        }
-        else if (vAdmin) {
-          const isMatch = await bcryptjs.compare(user_password, vAdmin.admin_password);
-
-          if (isMatch) {
-            const token = await vAdmin.generateToken();
-            res.cookie("jwt", token, {
-              expires: new Date(Date.now() + 86400000), //24 hours
-              httpOnly: true
-            })
-            res.status(200).json({ userType: "admin", message: "Admin LoggedIn" });
-          } else {
-            if (!vLawyer) {
-              res.status(400).send("Invalid Credentials");
-            }
-            else if (vLawyer) {
-              const isMatch = await bcryptjs.compare(user_password, vLawyer.lawyer_password);
-
-              if (isMatch) {
-                const token = await vLawyer.generateToken();
-                res.cookie("jwt", token, {
-                  expires: new Date(Date.now() + 86400000),
-                  httpOnly: true
-                })
-                res.status(200).json({ userType: "lawyer", message: "Lawyer LoggedIn",email:`${vLawyer.lawyer_email}` });
-              } else {
-                res.status(400).send("Invalid Credentials");
-              }
-            } else {
-              res.status(400).send("Invalid Credentials or user not verified");
-            }
-          }
-        }
-
+        }).status(200).json({ userType: "user", message: "User LoggedIn" });
       }
     }
 
+    if (vAdmin) {
+      isMatch = await bcryptjs.compare(user_password, vAdmin.admin_password);
+      if (isMatch) {
+        const token = await vAdmin.generateToken();
+        return res.cookie("jwt", token, {
+          expires: new Date(Date.now() + 86400000),
+          httpOnly: true
+        }).status(200).json({ userType: "admin", message: "Admin LoggedIn" });
+      }
+    }
+
+    if (vLawyer) {
+      isMatch = await bcryptjs.compare(user_password, vLawyer.lawyer_password);
+      if (isMatch) {
+        const token = await vLawyer.generateToken();
+        return res.cookie("jwt", token, {
+          expires: new Date(Date.now() + 86400000),
+          httpOnly: true
+        }).status(200).json({ userType: "lawyer", message: "Lawyer LoggedIn", email: `${vLawyer.lawyer_email}` });
+      }
+    }
+
+    res.status(400).send("Invalid Credentials");
 
   } catch (error) {
     console.error(error);
     res.status(400).send(error);
   }
 });
-
-
 
 module.exports = router;

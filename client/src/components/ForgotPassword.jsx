@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -22,12 +23,32 @@ const ForgotPassword = () => {
       });
 
       if (res.status === 200) {
-        window.alert("Password reset instructions sent to your email.");
+        Swal.fire({
+          title: 'Success',
+          text: 'Password reset instructions sent to your email',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        })
+        // window.alert("Password reset instructions sent to your email.");
         navigate("/login");
       } else if (res.status === 404) {
-        window.alert("User not found. Please check your email and try again.");
+        
+        Swal.fire({
+          title: 'Error!',
+          text: 'User not found. Please check your email and try again.',
+          icon: 'error',
+          confirmButtonText: 'ok'
+        })
+        // window.alert("User not found. Please check your email and try again.");
       } else {
-        window.alert("Password reset failed. Please try again later.");
+       
+        Swal.fire({
+          title: 'Error!',
+          text: 'Password reset failed. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'ok'
+        })
+        // window.alert("Password reset failed. Please try again later.");
       }
     } catch (error) {
       console.error(error);
